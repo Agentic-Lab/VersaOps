@@ -1,5 +1,6 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('node:path')
+const { initSession, getSdpResponse } = require('./realtime.js')
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -11,7 +12,7 @@ const createWindow = () => {
     }
   })
 
-  win.loadFile('realtime.html')
+  win.loadFile('index.html')
   win.webContents.openDevTools()
 }
 
@@ -30,3 +31,6 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+
+ipcMain.handle('init-session', initSession)
+ipcMain.handle('get-sdp-response', getSdpResponse)
